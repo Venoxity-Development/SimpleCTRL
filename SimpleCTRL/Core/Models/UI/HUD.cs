@@ -4,11 +4,11 @@ using Rectangle = Common.UI.Elements.Rectangle;
 using RAGENativeUI.Elements;
 using System;
 using System.Drawing;
-using SimpleCTRL.TinyTween;
 using SimpleCTRL.Handlers;
-using SimpleCTRL.Utils;
+using SimpleCTRL.Engine.Helpers;
 using Rage.Native;
 using Rage;
+using Common.API;
 
 namespace SimpleCTRL.Core.Models.UI
 {

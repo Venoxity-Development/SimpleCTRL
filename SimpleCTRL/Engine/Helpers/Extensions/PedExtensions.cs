@@ -5,7 +5,7 @@ using Rage.Native;
 using SimpleCTRL.Core.Models.UI;
 using System.Collections.Generic;
 
-namespace SimpleCTRL.Extensions
+namespace SimpleCTRL.Engine.Helpers.Extensions
 {
     /// <summary>
     /// Extension methods for the <see cref="Ped"/> class.

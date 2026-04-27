@@ -3,13 +3,12 @@ using Common.Native;
 using Common.UI;
 using Rage;
 using Rage.Native;
-using SimpleCTRL.Extensions;
+using SimpleCTRL.Engine.Helpers.Extensions;
 using SimpleCTRL.Handlers;
-using SimpleCTRL.Utils;
 using System;
 using System.Drawing;
 
-namespace SimpleCTRL.UI
+namespace SimpleCTRL.Engine.FrontendSystems.UI
 {
     internal static class VehicleUI
     {

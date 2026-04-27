@@ -1,7 +1,7 @@
 ﻿using Rage;
 using Rage.Native;
 
-namespace SimpleCTRL.Extensions
+namespace SimpleCTRL.Engine.Helpers.Extensions
 {
     /// <summary>
     /// Extension methods for the <see cref="Vector3"/> class.

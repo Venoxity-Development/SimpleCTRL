@@ -3,12 +3,14 @@ using Rage.Attributes;
 using SimpleCTRL.Components;
 using SimpleCTRL.Handlers;
 using SimpleCTRL.Threads;
-using SimpleCTRL.Utils;
+using SimpleCTRL.Engine.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Common.Native;
+using Common.API;
+using SimpleCTRL.Engine.InternalSystems;
 
 [assembly: Plugin("SimpleCTRL", Author = "Venoxity Development", PrefersSingleInstance = true, ShouldTickInPauseMenu = true, SupportUrl = "https://discord.gg/jCEdAF8AQz")]
 namespace SimpleCTRL

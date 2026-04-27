@@ -3,15 +3,15 @@ using Rage.Native;
 using SimpleCTRL.Components;
 using SimpleCTRL.Core.Models.UI;
 using SimpleCTRL.Handlers;
-using SimpleCTRL.UI;
-using SimpleCTRL.Utils;
+using SimpleCTRL.Engine.FrontendSystems.UI;
+using SimpleCTRL.Engine.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common;
 using Common.Native;
 
-namespace SimpleCTRL.Extensions
+namespace SimpleCTRL.Engine.Helpers.Extensions
 {
     /// <summary>
     /// Extension methods for the <see cref="Vehicle"/> class.

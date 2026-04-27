@@ -1,6 +1,6 @@
 ﻿using Common;
 using Rage;
-using SimpleCTRL.Extensions;
+using SimpleCTRL.Engine.Helpers.Extensions;
 using System;
 
 namespace SimpleCTRL.Components

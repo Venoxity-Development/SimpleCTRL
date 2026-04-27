@@ -1,4 +1,4 @@
-﻿namespace SimpleCTRL.Extensions
+﻿namespace SimpleCTRL.Engine.Helpers.Extensions
 {
     /// <summary>
     /// Provides extension methods for the float type.

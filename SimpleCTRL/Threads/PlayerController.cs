@@ -5,9 +5,10 @@ using Rage;
 using Rage.Attributes;
 using Rage.Native;
 using SimpleCTRL.Core.Models.UI;
-using SimpleCTRL.Extensions;
+using SimpleCTRL.Engine.InternalSystems;
+using SimpleCTRL.Engine.Helpers.Extensions;
 using SimpleCTRL.Handlers;
-using SimpleCTRL.Utils;
+using SimpleCTRL.Engine.Helpers;
 using System;
 
 namespace SimpleCTRL.Threads
@@ -113,8 +114,8 @@ namespace SimpleCTRL.Threads
                                     }
                                 }
 
-                                Extensions.VehicleExtensions.LockTransmission(playerVeh, true);
-                                Extensions.VehicleExtensions.CreateVehicleBlip(playerVeh);
+                                VehicleExtensions.LockTransmission(playerVeh, true);
+                                VehicleExtensions.CreateVehicleBlip(playerVeh);
                             }
                             else
                             {
@@ -128,8 +129,8 @@ namespace SimpleCTRL.Threads
                                     Globals.isParked = false;
                                 }
 
-                                Extensions.VehicleExtensions.LockTransmission(playerVeh, false);
-                                Extensions.VehicleExtensions.DeleteVehicleBlip(playerVeh);
+                                VehicleExtensions.LockTransmission(playerVeh, false);
+                                VehicleExtensions.DeleteVehicleBlip(playerVeh);
                             }
                         }
                     }
@@ -140,8 +141,8 @@ namespace SimpleCTRL.Threads
                     {
                         Globals.isParked = false;
 
-                        Extensions.VehicleExtensions.LockTransmission(playerVeh, false);
-                        Extensions.VehicleExtensions.DeleteVehicleBlip(playerVeh);
+                        VehicleExtensions.LockTransmission(playerVeh, false);
+                        VehicleExtensions.DeleteVehicleBlip(playerVeh);
                     }
 
                     #endregion
@@ -235,11 +236,11 @@ namespace SimpleCTRL.Threads
                 switch (ConfigHandler.VehicleIndicatorMode)
                 {
                     case "Normal":
-                        Extensions.VehicleExtensions.HandleNormalMode(ref intendedStatus,
+                        VehicleExtensions.HandleNormalMode(ref intendedStatus,
                             ref status);
                         break;
                     case "TurnOffAtTurn":
-                        Extensions.VehicleExtensions.HandleTurnOffAtTurnMode(ref intendedStatus,
+                        VehicleExtensions.HandleTurnOffAtTurnMode(ref intendedStatus,
                             ref turnOffAt, ref status, ref initialHeading);
                         break;
                     default:

@@ -1,6 +1,7 @@
 ﻿using Rage;
-using SimpleCTRL.UI;
-using SimpleCTRL.Utils;
+using SimpleCTRL.Engine.InternalSystems;
+using SimpleCTRL.Engine.FrontendSystems.UI;
+using SimpleCTRL.Engine.Helpers;
 
 namespace SimpleCTRL.Handlers
 {
@@ -11,7 +12,6 @@ namespace SimpleCTRL.Handlers
         public static void Start()
         {
             Logging.Info("starting...", "UIHandler");
-            SettingsMenuUI.Initialize();
             GameFiber.StartNew(delegate { Run(); });
         }
 
@@ -22,7 +22,6 @@ namespace SimpleCTRL.Handlers
             {
                 GameFiber.Yield();
                 VehicleUI.Start();
-                SettingsMenuUI.ProcessMenus();
             }
         }
     }

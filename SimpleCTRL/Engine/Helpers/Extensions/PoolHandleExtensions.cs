@@ -1,6 +1,6 @@
 ﻿using Rage;
 
-namespace SimpleCTRL.Extensions
+namespace SimpleCTRL.Engine.Helpers.Extensions
 {
     /// <summary>
     /// Extension methods for the <see cref="PoolHandle"/> class.

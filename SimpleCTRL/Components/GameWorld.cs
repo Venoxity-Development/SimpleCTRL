@@ -1,7 +1,7 @@
 ﻿using Common.Native;
 using Rage;
 using Rage.Native;
-using SimpleCTRL.Extensions;
+using SimpleCTRL.Engine.Helpers.Extensions;
 using SimpleCTRL.Handlers;
 
 namespace SimpleCTRL.Components
@@ -76,7 +76,7 @@ namespace SimpleCTRL.Components
 					return;
 				}
 
-				Extensions.VehicleExtensions.DeleteVehicleBlip(playerVeh);
+			    VehicleExtensions.DeleteVehicleBlip(playerVeh);
 			}
 			#endregion
 		}

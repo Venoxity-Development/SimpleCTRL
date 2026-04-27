@@ -4,9 +4,11 @@ using Common.Native;
 using Rage;
 using Rage.Native;
 using SimpleCTRL.Handlers;
-using SimpleCTRL.Utils;
+using SimpleCTRL.Engine.Helpers;
 using System;
 using System.Collections.Generic;
+using SimpleCTRL.Engine.InternalSystems;
+using SimpleCTRL.Engine.Helpers.Extensions;
 
 namespace SimpleCTRL.Threads
 {
@@ -293,7 +295,7 @@ namespace SimpleCTRL.Threads
         {
             Ped player = Game.LocalPlayer.Character;
             // return !player.IsOnFoot || !EntityExtensions.Exists(_lastVehicle) || player.IsCuffed || Extensions.GetDistance(_lastVehicle.Position, player.Position) > 5f || player.IsDead || NativeFunction.CallByHash<int>(0x83F969AA1EE2A664, _lastVehicle, -1) != player.Handle || _lastVehicle.IsDead || N.DecorGetBool(player, "IsDead") || N.DecorGetBool(player, "IsGrabbed");
-            return !player.IsOnFoot || !EntityExtensions.Exists(_lastVehicle) || player.IsCuffed || Extensions.Vector3Extensions.GetDistance(_lastVehicle.Position, player.Position) > 5f || player.IsDead || N.GetLastPedInVehicleSeat(_lastVehicle, -1) != player.Handle || _lastVehicle.IsDead || N.DecorGetBool(player, "IsDead") || N.DecorGetBool(player, "IsGrabbed");
+            return !player.IsOnFoot || !EntityExtensions.Exists(_lastVehicle) || player.IsCuffed || Vector3Extensions.GetDistance(_lastVehicle.Position, player.Position) > 5f || player.IsDead || N.GetLastPedInVehicleSeat(_lastVehicle, -1) != player.Handle || _lastVehicle.IsDead || N.DecorGetBool(player, "IsDead") || N.DecorGetBool(player, "IsGrabbed");
         }
         private static bool IsDead() => Game.LocalPlayer.Character.IsDead || N.DecorGetBool(Game.LocalPlayer.Character, "IsDead");
         private static string GetRandom(this List<string> list) => list[new Random().Next(list.Count)];
