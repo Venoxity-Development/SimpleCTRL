@@ -1,0 +1,147 @@
+﻿using RAGENativeUI.Elements;
+
+namespace SimpleCTRL.Engine.FrontendSystems
+{
+    internal static class FuelBarUI
+    {
+        #region Fields
+        public static Scaleform buttons = new Scaleform();
+
+        public static float fuelBarWidth = GetBarWidth();
+
+        public static float fuelBarHeight = 6f;
+
+        public static PointF basePosition = new PointF(0f, 584f);
+
+        public static PointF fuelBarBackdropPosition = basePosition;
+
+        public static PointF fuelBarBackPosition = new PointF(fuelBarBackdropPosition.X, fuelBarBackdropPosition.Y + 3f);
+
+        public static PointF fuelBarPosition = fuelBarBackPosition;
+
+        public static SizeF fuelBarBackdropSize = new SizeF(fuelBarWidth, 12f);
+
+        public static SizeF fuelBarBackSize = new SizeF(fuelBarWidth, fuelBarHeight);
+
+        public static SizeF fuelBarSize = fuelBarBackSize;
+
+        public static Color fuelBarBackdropColour = Color.FromArgb(100, 0, 0, 0);
+
+        public static Color fuelBarBackColour = Color.FromArgb(50, 255, 179, 0);
+
+        public static Color fuelBarColourNormal = Color.FromArgb(150, 255, 179, 0);
+
+        public static Color fuelBarColourWarning = Color.FromArgb(255, 255, 245, 220);
+
+        public static Color fuelBarElectricColourNormal = Color.FromArgb(255, 12, 110, 201);
+
+        public static Color fuelBarElectricColourWarning = Color.FromArgb(255, 187, 231, 237);
+
+        public static Tween<float> fuelBarColorTween = new FloatTween();
+
+        public static bool fuelBarAnimationDir = true;
+
+        public static Common.UI.Elements.Rectangle fuelBarBackdrop = new Common.UI.Elements.Rectangle(fuelBarBackdropPosition, fuelBarBackdropSize, fuelBarBackdropColour);
+
+        public static Common.UI.Elements.Rectangle fuelBarBack = new Common.UI.Elements.Rectangle(fuelBarBackPosition, fuelBarBackSize, fuelBarBackColour);
+
+        public static Common.UI.Elements.Rectangle fuelBar = new Common.UI.Elements.Rectangle(fuelBarPosition, fuelBarSize, fuelBarColourNormal);
+
+        public static PointF Position
+        {
+            set
+            {
+                fuelBarBackdrop.Position = value;
+                fuelBarBack.Position = new PointF(value.X, value.Y + 3f);
+                fuelBar.Position = fuelBarBack.Position;
+            }
+        }
+
+        #endregion
+
+        public static void RenderBar(float currentFuelLevel, float maxFuelLevel, bool isElectric)
+        {
+            float fuelLevelPercentage = currentFuelLevel / maxFuelLevel * 100f;
+            PointF safeZone = GetSafezoneBounds();
+
+            bool bigMap = false; // code later
+
+            if (bigMap)
+            {
+                Position = new PointF(basePosition.X + safeZone.X, basePosition.Y - safeZone.Y - 180f);
+            }
+            else
+            {
+                Position = new PointF(basePosition.X + safeZone.X, basePosition.Y - safeZone.Y);
+            }
+
+            fuelBar.SizeF = new SizeF(fuelBarWidth / 100f * fuelLevelPercentage, fuelBarHeight);
+            if (maxFuelLevel > 0f && fuelLevelPercentage < 15f)
+            {
+                if (fuelBarColorTween.State == TweenState.Stopped)
+                {
+                    fuelBarAnimationDir = !fuelBarAnimationDir;
+                    fuelBarColorTween.Start(fuelBarAnimationDir ? 100f : 255f, fuelBarAnimationDir ? 255f : 100f, 0.5f, ScaleFuncs.QuarticEaseOut);
+                }
+                fuelBarColorTween.Update(N.GetFrameTime());
+                fuelBar.Color = Color.FromArgb((int)Math.Floor(fuelBarColorTween.CurrentValue), isElectric ? fuelBarElectricColourWarning : fuelBarColourWarning);
+            }
+            else
+            {
+                fuelBar.Color = (isElectric ? fuelBarElectricColourNormal : fuelBarColourNormal);
+                if (fuelBarColorTween.State != TweenState.Stopped)
+                {
+                    fuelBarColorTween.Stop(StopBehavior.ForceComplete);
+                }
+            }
+
+            fuelBarBackdrop.Draw();
+            fuelBarBack.Draw();
+            fuelBar.Draw();
+        }
+
+        #region Utilities
+        public static PointF GetSafezoneBounds()
+        {
+            float t = N.GetSafeZoneSize();
+            float w = 1280f;
+            float h = 720f;
+            return new PointF((int)Math.Round((w - w * t) / 2f + 1f), (int)Math.Round((h - h * t) / 2f - 2f));
+        }
+
+        /// <summary>
+        /// Returns resolution specified bar width
+        /// </summary>
+        /// <returns></returns>
+        private static float GetBarWidth()
+        {
+            float width;
+            double aspect = NativeFunction.CallByHash<float>(0xF1307EF624A80D87);
+            bool bigMap = false; // code later
+
+            switch (aspect)
+            {
+                case (float)1.5: // 3:2
+                    width = bigMap ? 336f : 212f;
+                    break;
+                case (float)1.33333337306976: // 4:3
+                    width = bigMap ? 378f : 240f;
+                    break;
+                case (float)1.66666662693024: // 5:3
+                    width = bigMap ? 302f : 191f;
+                    break;
+                case (float)1.25: // 5:4
+                    width = bigMap ? 405f : 255f;
+                    break;
+                case (float)1.60000002384186: // 16:10
+                    width = bigMap ? 316f : 200f;
+                    break;
+                default:
+                    width = bigMap ? 285f : 180f; // 16:9
+                    break;
+            }
+            return width;
+        }
+        #endregion
+    }
+}

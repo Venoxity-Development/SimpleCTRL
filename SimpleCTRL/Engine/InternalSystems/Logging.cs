@@ -1,8 +1,4 @@
-﻿using Rage;
-using SimpleCTRL.Handlers;
-using System;
-
-namespace SimpleCTRL.Engine.InternalSystems
+﻿namespace SimpleCTRL.Engine.InternalSystems
 {
     internal enum LoggingLevel
     {
@@ -71,7 +67,7 @@ namespace SimpleCTRL.Engine.InternalSystems
         private static void Log(LoggingLevel level, string message, string caller, Exception ex = null)
         {
             // Check if the specified logging level is greater than or equal to the configured logging level
-            if ((int)level >= ConfigHandler.LogLevel)
+            if ((int)level >= Settings.LogLevel)
             {
                 // InternalLogger the message along with the caller information
                 Game.LogTrivial("[" + caller + "] " + message);

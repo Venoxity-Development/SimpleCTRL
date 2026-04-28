@@ -1,96 +1,78 @@
-﻿using Rage;
-using Rage.Attributes;
-using SimpleCTRL.Components;
-using SimpleCTRL.Handlers;
-using SimpleCTRL.Threads;
-using SimpleCTRL.Engine.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using Common.Native;
-using Common.API;
-using SimpleCTRL.Engine.InternalSystems;
+﻿using SimpleCTRL.Modules;
 
-[assembly: Plugin("SimpleCTRL", Author = "Venoxity Development", PrefersSingleInstance = true, ShouldTickInPauseMenu = true, SupportUrl = "https://discord.gg/jCEdAF8AQz")]
+[assembly: Rage.Attributes.Plugin("SimpleCTRL", Author = "Venoxity Development", PrefersSingleInstance = true, ShouldTickInPauseMenu = true, SupportUrl = "https://discord.gg/jCEdAF8AQz")]
+
 namespace SimpleCTRL
 {
-    internal class Entrypoint
+    public class EntryPoint : CommonPlugin
     {
-        private static readonly Dictionary<string, DecoratorType> decorators = new Dictionary<string, DecoratorType>()
+        #region Fields
+        private static readonly Dictionary<string, DecoratorType> decorators = new()
         {
             { "_Fuel_Level", DecoratorType.Float },
-            { "brakeHeat", DecoratorType.Int },
+            { "brakeHeat", DecoratorType.Int }
         };
+        #endregion
 
+        #region Plugin Lifecycle
         public static void Main()
         {
-            if (CheckDependencies())
-            {
-                Logging.Info("starting...", "SimpleCTRL");
-                Logging.Info("Disabling the phone control", "SimpleCTRL");
-                Game.DisableControlAction(0, GameControl.Phone, true);
-                ConfigHandler.Initialize();
-                Decorators.Initialize();
-                Decorators.Register(decorators);
-                PlayerController.Start();
-                SpecialModesManager.Start();
-                UIHandler.Start();
-                Managed.LastWorldTime = DateTime.UtcNow;
-                GameFiber.StartNew(delegate { GameWorld.CreateDepartmentPumps(); });
-                GameWorld.CreateBlips();
-            }
-            else
-            {
-                Game.DisplayNotification("new_editor", "warningtriangle", "SimpleCTRL", "~r~Initialization Failure", "~y~SimpleCTRL could not start.  You are missing required libraries.");
-            }
+            Logging.Info("SimpleCTRL plugin lifecycle started.", "EntryPoint");
+
+            DependencyManager.AddDependency("NAudio.dll", "2.2.1");
+            DependencyManager.AddDependency("Venoxity.Common.dll", "1.0.9");
+            DependencyManager.AddDependency("RageNativeUI.dll", "1.9.3.0");
+            if (!DependencyManager.CheckDependencies()) return;
+
+            InitializePlugin();
         }
+        #endregion
 
-        private static void OnUnload(bool isTerminating)
+        #region Plugin Initialization
+        private static void InitializePlugin()
         {
-            Logging.Info("stopping SimpleCTRL", "SimpleCTRL");
-            GameWorld.RemoveBlips();
-            foreach (var obj in Globals.DepartmentPumpObjects)
-            {
-                if (EntityExtensions.Exists(obj))
-                {
-                    obj.Delete();
-                }
-            }
+            Logging.Info("Initializing SimpleCTRL...", "EntryPoint");
 
-            Globals.DepartmentPumpObjects.Clear();
-        }
-
-        private static bool CheckDependencies()
-        {
-            foreach (var dependency in UtilityConstants.Dependencies)
-            {
-                if (!IsAssemblyAvailable(dependency.Name, dependency.Version))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private static bool IsAssemblyAvailable(string assemblyName, string version)
-        {
             try
             {
-                AssemblyName assemblyName2 = AssemblyName.GetAssemblyName(AppDomain.CurrentDomain.BaseDirectory + "/" + assemblyName);
-                if (assemblyName2.Version >= new Version(version))
-                {
-                    Game.LogTrivial($"SimpleCTRL dependency {assemblyName} is available ({assemblyName2.Version}).");
-                    return true;
-                }
-                Game.LogTrivial($"SimpleCTRL dependency {assemblyName} does not meet minimum requirements ({assemblyName2.Version} < {version}).");
-                return false;
+                Settings.Initialize();
+                Decorators.Initialize();
+                Decorators.Register(decorators);
+
+                GasStationManager.SetupGasStationBlips();
+                GasStationManager.StartPumpPropManagement();
+                FuelSystemModule.Start();
+
+                VehicleDamageModule.Start();
+                VehicleSystemModule.Start();
+                KeybindManager.Start();
+
+                LastWorldTime = DateTime.UtcNow;
+
+                Logging.Info("SimpleCTRL successfully initialized.", "EntryPoint");
             }
-            catch (Exception ex) when (ex is FileNotFoundException || ex is BadImageFormatException)
+            catch (Exception ex)
             {
-                Game.LogTrivial("SimpleCTRL dependency " + assemblyName + " is not available.");
-                return false;
+                Logging.Error($"Initialization failed: {ex.Message}", "EntryPoint");
             }
         }
+        #endregion
+
+        #region Unload
+        public static void OnUnload(bool isTerminating)
+        {
+            CleanUp();
+
+            Logging.Info("Plugin unloading initiated.", "EntryPoint");
+        }
+        private static void CleanUp()
+        {
+            Logging.Info("Cleaning up resources...", "EntryPoint");
+
+            GasStationManager.DeleteAllBlips();
+            GasStationManager.DeleteAllPumps();
+            GasStationManager.DeleteNozzleAndRope();
+        }
+        #endregion
     }
 }

@@ -39,9 +39,10 @@
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>preview</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -49,14 +50,11 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>preview</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InputManager">
-      <HintPath>..\packages\InputManager.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.HashCode, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.HashCode.6.0.0\lib\net462\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
@@ -64,14 +62,32 @@
     <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio">
-      <HintPath>..\packages\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=2.3.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.2.3.0\lib\net472\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Asio, Version=2.3.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.Asio.2.3.0\lib\netstandard2.0\NAudio.Asio.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.Core.2.3.0\lib\netstandard2.0\NAudio.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Midi, Version=2.3.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.Midi.2.3.0\lib\netstandard2.0\NAudio.Midi.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Wasapi, Version=2.3.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.Wasapi.2.3.0\lib\netstandard2.0\NAudio.Wasapi.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.WinForms, Version=2.3.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.WinForms.2.3.0\lib\net472\NAudio.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.WinMM, Version=2.3.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.WinMM.2.3.0\lib\netstandard2.0\NAudio.WinMM.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RAGENativeUI">
-      <HintPath>..\packages\RAGENativeUI.dll</HintPath>
+    <Reference Include="RAGENativeUI, Version=1.9.3.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\RAGENativeUI.1.9.3\lib\net472\RAGENativeUI.dll</HintPath>
     </Reference>
     <Reference Include="RagePluginHook, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\RagePluginHook.1.124.0\lib\net472\RagePluginHook.dll</HintPath>
@@ -122,43 +138,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\GameWorld.cs" />
-    <Compile Include="Components\FuelLogic.cs" />
-    <Compile Include="Core\Models\UI\HUD.cs" />
-    <Compile Include="Engine\Helpers\ConversionAndFormattingHelper.cs" />
-    <Compile Include="Engine\Helpers\UIHelper.cs" />
-    <Compile Include="Engine\Helpers\VehicleHelper.cs" />
-    <Compile Include="Engine\InternalSystems\Logging.cs" />
-    <Compile Include="Engine\Helpers\Extensions\FloatExtensions.cs" />
-    <Compile Include="Engine\Helpers\Extensions\PedExtensions.cs" />
-    <Compile Include="Engine\Helpers\Extensions\PoolHandleExtensions.cs" />
-    <Compile Include="Engine\Helpers\Extensions\Vector3Extensions.cs" />
+    <Compile Include="API\Functions.cs" />
+    <Compile Include="Engine\Data\GasStationData.cs" />
+    <Compile Include="Engine\Data\TripInfo.cs" />
+    <Compile Include="Engine\Data\VehicleDamageConfig.cs" />
+    <Compile Include="Engine\Data\VehicleProperties.cs" />
+    <Compile Include="Engine\FrontendSystems\ConsoleCommands.cs" />
+    <Compile Include="Engine\FrontendSystems\FuelBarUI.cs" />
     <Compile Include="Engine\Helpers\Extensions\VehicleExtensions.cs" />
-    <Compile Include="Handlers\DoorHandler.cs" />
-    <Compile Include="Handlers\VehicleControlHandler.cs" />
-    <Compile Include="InLoopOutAnimation.cs" />
-    <Compile Include="Core\UtilityConstants.cs" />
-    <Compile Include="Core\Managed.cs" />
-    <Compile Include="Globals.cs" />
-    <Compile Include="Handlers\ControlHandler.cs" />
-    <Compile Include="Handlers\SoundHandler.cs" />
-    <Compile Include="Handlers\UIHandler.cs" />
-    <Compile Include="Core\Models\AircraftFuelSpecs.cs" />
-    <Compile Include="Core\Models\AirportFuelPump.cs" />
-    <Compile Include="Core\Models\GasPump.cs" />
-    <Compile Include="Core\Models\GasStation.cs" />
-    <Compile Include="Core\Models\RepairShop.cs" />
-    <Compile Include="Core\Models\TripInfo.cs" />
-    <Compile Include="Core\Models\Vehicle\VehicleFuelSpecs.cs" />
+    <Compile Include="Engine\Helpers\FuelConstants.cs" />
+    <Compile Include="Engine\Helpers\UtilityHelper.cs" />
+    <Compile Include="Engine\InternalSystems\AudioHelper.cs" />
+    <Compile Include="Engine\InternalSystems\Managers\KeybindManager.cs" />
+    <Compile Include="Engine\InternalSystems\Logging.cs" />
+    <Compile Include="Engine\InternalSystems\Managers\GasStationManager.cs" />
+    <Compile Include="Engine\InternalSystems\Managers\VehicleRefuelingManager.cs" />
+    <Compile Include="Engine\InternalSystems\Settings.cs" />
+    <Compile Include="GlobalUsings.cs" />
+    <Compile Include="Modules\FuelSystemModule.cs" />
+    <Compile Include="Modules\VehicleDamageModule.cs" />
+    <Compile Include="Modules\VehicleSystemModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entrypoint.cs" />
-    <Compile Include="Handlers\ConfigHandler.cs" />
-    <Compile Include="Threads\PlayerController.cs" />
-    <Compile Include="Threads\SpecialModesManager.cs" />
-    <Compile Include="Engine\FrontendSystems\UI\VehicleUI.cs" />
-    <Compile Include="Core\Models\Vehicle\VehicleProperties.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -167,4 +169,12 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>SET GTA="C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V"
+
+if exist %25GTA%25 (
+  copy /Y "$(TargetDir)$(ProjectName).dll" "C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\Plugins\$(ProjectName).dll"
+  copy /Y "$(TargetDir)$(ProjectName).pdb" "C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\Plugins\$(ProjectName).pdb"
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
